@@ -1,0 +1,37 @@
+// html placeholder to insert data into
+// paste entire text from this file into html body (or put the script in a script file, whichever floats your boat)
+
+<span id="current-price"></span> ( <span id="percentage-change"></span>)
+
+// script to fetch quote & percentage change, then designate corresponding colors to positive or negative gains.
+// be sure to get your free API key from finnhub.io and replace the ADD-API-KEY-HERE placeholder.
+
+<script type="text/javascript">
+fetch("https://finnhub.io/api/v1/quote?symbol=AAPL&token=ADD-API-KEY-HERE")
+  .then(response => response.json()) // convert the response into a javascript object which is received by .then
+  .then(data => {
+       console.log(data['c'])
+       console.log(data['dp'])
+       price = data['c']
+       change = data['dp']
+       x = Math.sign(change);
+  })
+  .then(function (currentPrice) {
+    document.querySelector("#current-price").innerHTML = "$" + price;
+    document.querySelector("#percentage-change").innerHTML = change.toFixed(2) + "%";
+   switch(x) {
+   case -1:
+    document.getElementById("percentage-change").style.color = "red";
+   break;
+   case 1:
+    document.getElementById("percentage-change").style.color = "green";
+   break;
+   default:
+    document.getElementById("percentage-change").style.color = "black";
+     };
+  })
+  .catch(function (error) {
+       console.log("Error: " + error);
+   });  
+  </script>
+
